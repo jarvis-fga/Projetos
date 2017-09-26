@@ -1,0 +1,2 @@
+Comentário Bom ou Ruim
+Classificar comentário como bom ou ruim, se elogia ou não o produto.
