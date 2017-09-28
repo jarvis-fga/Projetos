@@ -7,21 +7,38 @@ Cada pasta do repositório é referente a um dos problemas propostos pelos profr
 A Wiki dispõe de um pequeno resumo sobre as tecnologias utilizadas na resolução dos problemas, bem como links úteis para quem se interessar pelo conteúdo.
 
 ## Ambiente de Desenvolvimento
+Abaixo, apresenta-se instruções para criação e uso do ambiente por meio da plataforma Docker.
+
+Clonando o repositório:
+```
+git clone https://github.com/jarvis-fga/Projetos.git
+```
+
 Construindo a imagem:
 ```
 docker build -t machine-learn .
 ```
+O comando acima deve ser realizado dentro da pasta Projetos, onde se encontra o `Dockerfile`.
 
 Executando o container:
 ```
-docker run --name machine -p 8888:8888 -v path/Projetos:/code machine-learn:latest /bin/sh ./boot.sh
+docker run --name machine -p 8888:8888 -v your_path/Projetos:/code machine-learn:latest /bin/sh ./boot.sh
 ```
 
-Atenção, a expressão `path` deve ser substituída pelo caminho da sua pasta `Projetos`
+Atenção, a expressão `your_path` deve ser substituída pelo caminho da sua pasta `Projetos`
 
 Acessando o bash do container:
 ```
-docker exec -it machine-learn bash
+docker exec -it machine bash
 ```
-
+Parando a execução do container:
+```
+docker stop machine
+```
+Iniciando novamente:
+```
+docker start machine
+```
 Ao executar o container, o servidor do `jupiter-notebook` é iniciado. Acesse-o na porta `8888` do seu `localhost`.
+Às vezes o `jupiter-notebook` exige um token de acesso, que pode ser visualizado nos logs do container. Caso tenha executado o container com o comando `start` precisará do comando `docker logs machine` para visualizá-los.
+
