@@ -55,6 +55,12 @@ def fit_p(kp, cc, data, pearson):
     treated_dataset = pd.read_csv('data.csv', usecols=list_of_valid_cols) #criar um dataset tratado
 
     treated_dataset = treated_dataset.replace('?', np.NaN)
+
+    if len(list_of_valid_cols) == 0:
+        print('LinearRegression with propagation (kp = {}, cc = {}): '.format(kp, cc))
+        print('0 valid cols')
+        return -1
+
     imp = Imputer()
     imp.fit(treated_dataset)
     treated_dataset = imp.transform(treated_dataset)
@@ -78,7 +84,7 @@ def fit_p(kp, cc, data, pearson):
     modelLR = linear_model.LinearRegression()
     modelLR.fit(fit_data, fit_label)
     assertionsLR = modelLR.predict(val_data)
-    print('LinearRegression with propagation: ')
+    print('LinearRegression with propagation (kp = {}, cc = {}): '.format(kp, cc))
     error = mean_squared_error(val_label, assertionsLR)
     print(error)
     return error
@@ -99,19 +105,29 @@ ax = fig.gca(projection='3d')
 plotx = np.arange(0, 1, 0.05)
 ploty = np.arange(0, 1, 0.05)
 
-z = []
+minerror = 1
+maxerror = 0
+
+z = np.zeros((20, 20))
 for i in range(20):
     for j in range(20):
         z[i][j] = fit_p(plotx[i], ploty[j], data, pearson)
+        if z[i][j] < minerror and z[i][j] > 0:
+            minerror = z[i][j]
+        if z[i][j] > maxerror and z[i][j] < 1:
+            maxerror = z[i][j]
 plotx, ploty = np.meshgrid(plotx, ploty)
 # Plot the surface.
-surf = ax.plot_surface(plotx, ploty, z, cmap=cm.coolwarm,
+surf = ax.plot_surface(plotx, ploty, z, cmap=cm.coolwarm, vmin=minerror, vmax=maxerror,
                        linewidth=0, antialiased=False)
 
 # Customize the z axis.
-ax.set_zlim(-1.01, 1.01)
+ax.set_zlim(minerror, maxerror)
+ax.set_zlabel("error (negative means impossibility)")
+ax.set_xlabel("minimum pearson coefficient acceptable")
+ax.set_ylabel("minimum knowledge percentual acceptable")
 ax.zaxis.set_major_locator(LinearLocator(10))
-ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+ax.zaxis.set_major_formatter(FormatStrFormatter('%.03f'))
 
 # Add a color bar which maps values to colors.
 fig.colorbar(surf, shrink=0.5, aspect=5)
