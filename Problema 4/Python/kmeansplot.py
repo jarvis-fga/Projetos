@@ -88,12 +88,12 @@ print(90 * '_')
 
 import matplotlib.pyplot as plt
 
-reduced_data = PCA(n_components=2).fit_transform(data)
-print(reduced_data)
-kmeans = KMeans(init='k-means++', n_clusters=len(labels), n_init=1)
-print("2")
-# kmeans.fit(reduced_data)
-print("3")
+reduced_data = PCA(n_components=2).fit_transform(data) #reduzir informações com PCA
+print(reduced_data) #print de teste
+kmeans = KMeans(init='k-means++', n_clusters=len(labels), n_init=1) #parâmetros do kmeans
+print("2") #print de teste
+# kmeans.fit(reduced_data) #!!!ESSA LINHA ESTOURA A RAM!!!
+print("3") #print de teste
 h = .05 # Escala do grid pra plotar
 # Quanto menor a escala, maior a precisão
 '''
