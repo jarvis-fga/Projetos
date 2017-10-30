@@ -50,9 +50,23 @@ print("KMeans done")
 xx = np.array([])
 yy = np.array([])
 
+x_pulsar = np.array([])
+y_pulsar = np.array([])
+j=0
+pulsar=0
+
+# Build the arrays X and Y to plot
 for i in new_pca:
 	xx = np.append(xx, i[0])
 	yy = np.append(yy, i[1])
+	
+	# See the pulsar results
+	# if (labels[j] == 1):
+	# 	pulsar+=1
+	# 	x_pulsar = np.append(x_pulsar, i[0])
+	# 	y_pulsar = np.append(y_pulsar, i[1])
+	# j+=1
+# print("Total pulsar: %d"%pulsar)
 
 print("Start graph:")
 
@@ -65,6 +79,15 @@ h4,=plt.plot(xx[kmeans.labels_==3], yy[kmeans.labels_==3],'ro')
 
 plt.xlabel('Eixo X')
 plt.ylabel('Eixo Y')
+plt.title('Plot data with PCA and KMeans 4 groups')
 
-plt.legend([h1, h2],['Group 1', 'Group 2'], loc='upper left')
+plt.legend([h1, h2, h3, h4],['Group 1', 'Group 2', 'Group 3', 'Group 4'], loc='upper left')
 plt.show()
+
+# Plot only the Pulsar
+# plt.figure("Only Pulsar Stars")
+# plt.plot(x_pulsar, y_pulsar, 'go')
+# plt.title('Only the Pulsar Star')
+# plt.xlabel('Eixo X')
+# plt.ylabel('Eixo Y')
+# plt.show()
